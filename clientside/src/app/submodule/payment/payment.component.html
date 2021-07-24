@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4" id="logindiv">
+    <h1>Account verification using MicroTransfers</h1>
+    <form [formGroup]="myform">
+      <h3>please enter two numbers from your account</h3><br />
+      <label class="control-label col-sm-4"><b>first number:</b></label>
+      <div class="col-sm-10">
+        <input
+          type="number"
+          class="form-control"
+          formControlName="firstNumber"
+        />
+      </div>
+      <label class="control-label col-sm-4"><b>second number:</b></label>
+      <div class="col-sm-10">
+        <input
+          type="number"
+          class="form-control"
+          formControlName="secondNumber"
+        />
+      </div>
+      <label class="control-label col-sm-2"><b>Amount:</b></label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" formControlName="amount" />
+      </div>
+      <br />
+      <!-- <label>first number </label>
+      <input formControlName="firstNumber" /><br />
+      <label>second number </label>
+      <input formControlName="secondNumber" /><br />
+      <label>Amount </label>
+      <input formControlName="amount" /><br /> -->
+      <button (click)="sendFinalPayment()" class="btn btn-info" id="pay">
+        pay
+      </button>
+    </form>
+  </div>
+  <div class="col-md-4"></div>
+</div>

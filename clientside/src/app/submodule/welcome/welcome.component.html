@@ -1,0 +1,112 @@
+<div>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-6" id="logindiv">
+      <h1>ACH Payment Method</h1>
+
+      <form [formGroup]="myform">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Enter Account Number</mat-label>
+          <input matInput formControlName="accountNumber" /> </mat-form-field
+        ><br />
+
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Enter Route Number</mat-label>
+          <input matInput formControlName="routingNumber" /> </mat-form-field
+        ><br />
+
+        <!-- <label>Account Number</label>
+        <input type="text" id="ac" formControlName="accountNumber" /><br /> -->
+
+        <!-- <label>Route Number</label>
+        <input type="text" id="rc" formControlName="routingNumber" /><br /> -->
+<!-- //id="accountType" -->
+        <div class="accountType">
+          <label for="accountType">accountType </label>
+          <select
+            name="accountType"
+            
+            formControlName="accountType" value="dddd"
+          >
+            <option value="checking">checking</option>
+            <option value="saving">savings</option>
+          </select>
+          <br />
+        </div>
+
+        <label for="ownershipType">ownershipType </label>
+        <select
+          name="ownershipType"
+          id="ownershipType"
+          formControlName="ownershipType"
+        >
+          <option value="personal">personal</option>
+          <option value="business">business</option></select
+        ><br />
+
+        <div formGroupName="billingAddress">
+          <h3>
+            <b><label for="billingAddress">Billing Address </label><br /></b>
+          </h3>
+
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>streetAddress</mat-label>
+            <input matInput formControlName="streetAddress" /> </mat-form-field
+          ><br />
+
+          <!-- <label>streetAddress</label>
+          <input type="text" formControlName="streetAddress" /><br /> -->
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>extendedAddress</mat-label>
+            <input
+              matInput
+              formControlName="extendedAddress"
+            /> </mat-form-field
+          ><br />
+          <!-- 
+          <label>extendedAddress</label>
+          <input type="text" formControlName="extendedAddress" /><br />
+           -->
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>locality</mat-label>
+            <input matInput formControlName="locality" /> </mat-form-field
+          ><br />
+
+          <!-- <label>locality</label>
+          <input type="text" formControlName="locality" /><br /> -->
+
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>region</mat-label>
+            <input matInput formControlName="region" /> </mat-form-field
+          ><br />
+          <!-- <label>region</label>
+          <input type="text" formControlName="region" /><br /> -->
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>postalCode</mat-label>
+            <input matInput formControlName="postalCode" /> </mat-form-field
+          ><br />
+          <!-- <label>postalCode</label>
+          <input type="text" formControlName="postalCode" /><br /> -->
+        </div>
+
+        <br />
+        <mat-checkbox formControlName="concent"
+          >I authorize Braintree to verify my account</mat-checkbox
+        ><br />
+
+        <button
+          (click)="createBraintreeFunction()"
+          class="btn btn-info"
+          id="submit"
+        >
+          submit
+        </button>
+      </form>
+
+      <!-- <section class="example-section">
+        <mat-checkbox>Check mee!</mat-checkbox>
+      </section> -->
+    </div>
+  </div>
+  <div class="col-md-4"></div>
+</div>
