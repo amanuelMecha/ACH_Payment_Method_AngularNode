@@ -1,7 +1,14 @@
-#submit{
-width: 30%;
-padding: 5px;
-border-radius: 20px;
-margin-left: 45%;
-margin-right: 10px;
+#submit {
+  width: 30%;
+  padding: 5px;
+  border-radius: 20px;
+  margin-left: 45%;
+  margin-right: 10px;
+}
+.red-text {
+  color: red;
+}
+#accountInfo {
+  margin-left: 20px;
+  margin-top: 5px;
 }

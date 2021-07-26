@@ -1,10 +1,11 @@
 <div>
-  <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-6" id="logindiv">
-      <h1>ACH Payment Method</h1>
+  <!-- <div class="col-md-6" id="logindiv"> -->
 
-      <form [formGroup]="myform">
+  <form [formGroup]="myform">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <h1>ACH Payment Method</h1>
         <mat-form-field class="example-full-width" appearance="fill">
           <mat-label>Enter Account Number</mat-label>
           <input matInput formControlName="accountNumber" /> </mat-form-field
@@ -20,14 +21,10 @@
 
         <!-- <label>Route Number</label>
         <input type="text" id="rc" formControlName="routingNumber" /><br /> -->
-<!-- //id="accountType" -->
+        <!-- //id="accountType" -->
         <div class="accountType">
           <label for="accountType">accountType </label>
-          <select
-            name="accountType"
-            
-            formControlName="accountType" value="dddd"
-          >
+          <select name="accountType" formControlName="accountType" value="dddd">
             <option value="checking">checking</option>
             <option value="saving">savings</option>
           </select>
@@ -41,9 +38,11 @@
           formControlName="ownershipType"
         >
           <option value="personal">personal</option>
-          <option value="business">business</option></select
-        ><br />
+          <option value="business">business</option>
+        </select>
+      </div>
 
+      <div class="col-md-6">
         <div formGroupName="billingAddress">
           <h3>
             <b><label for="billingAddress">Billing Address </label><br /></b>
@@ -90,10 +89,14 @@
         </div>
 
         <br />
+
         <mat-checkbox formControlName="concent"
-          >I authorize Braintree to verify my account</mat-checkbox
+          ><p>I authorize Braintree, to verify my bank account</p></mat-checkbox
         ><br />
 
+        <div *ngIf="authorizedFromService" class="text-danger">
+          <p>please authorize braintree to preforme this operation</p>
+        </div>
         <button
           (click)="createBraintreeFunction()"
           class="btn btn-info"
@@ -101,12 +104,14 @@
         >
           submit
         </button>
-      </form>
+      </div>
+    </div>
+  </form>
 
-      <!-- <section class="example-section">
+  <!-- <section class="example-section">
         <mat-checkbox>Check mee!</mat-checkbox>
       </section> -->
-    </div>
-  </div>
+
+  <!-- </div> -->
   <div class="col-md-4"></div>
 </div>

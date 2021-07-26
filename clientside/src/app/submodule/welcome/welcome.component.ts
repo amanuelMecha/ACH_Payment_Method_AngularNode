@@ -15,7 +15,8 @@ export class WelcomeComponent implements OnInit {
   accountT = ['saving'];
   bankDetails: any;
   enterTwoNumber: any;
-
+  authorizedFromService: any;
+  auth2: any;
   constructor(
     private formbuild: FormBuilder,
     private service: TestserviceService
@@ -37,12 +38,14 @@ export class WelcomeComponent implements OnInit {
     });
     this.myform.valueChanges.subscribe((data) => {
       this.bankDetails = data;
-      console.log('myform', data);
+      this.auth2 = data.concent;
+      console.log('myform', this.auth2);
     });
     this.generateToken();
   }
 
   ngOnInit(): void {
+    
     // this.enterTwoNumber = this.service.enterTwoNumber;
     // console.log('entervalue oninit', this.enterTwoNumber);
   }
@@ -50,7 +53,9 @@ export class WelcomeComponent implements OnInit {
   generateToken() {
     this.service.getToken();
   }
+  
   createBraintreeFunction() {
     this.service.createBraintree(this.bankDetails);
+    this.authorizedFromService = !this.auth2;
   }
 }

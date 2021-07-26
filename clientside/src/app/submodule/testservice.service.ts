@@ -13,6 +13,7 @@ export class TestserviceService {
   nounce: any;
   nonceValue: any = '';
   enterTwoNumber: any;
+
   url = 'http://localhost:3030/';
   constructor(private http: HttpClient, private route: Router) {}
   //step 1 and 2 requests a client token from your server and server send token
@@ -102,6 +103,7 @@ export class TestserviceService {
 
     console.log('chmbilaw nonce', this.nounce);
   };
+
   // step send two numbers to the server
   finalPay(fNumber: any, sNumber: any, amount: any) {
     return this.http

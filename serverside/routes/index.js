@@ -3,6 +3,7 @@ var router = express.Router();
 var braintree = require("braintree");
 var verificationId;
 var results;
+
 const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
   merchantId: "bgznqt4c5w7p6vpx",
@@ -10,6 +11,7 @@ const gateway = new braintree.BraintreeGateway({
   privateKey: "4517bea90f555cbbcfc47d52942d3c4e",
 });
 
+// generate token
 router.get("/initializeBraintree", async (req, res) => {
   try {
     let token = (await gateway.clientToken.generate({})).clientToken;
@@ -46,7 +48,7 @@ router.post("/confirmBraintree", async (req, res) => {
             if (result.success) {
               results = result;
               const usBankAccount = result.paymentMethod;
-
+              //we will use this verfication id for final payment
               verificationId = usBankAccount.verifications[0].id;
               console.log("cho result", verificationId);
 
@@ -69,6 +71,8 @@ router.post("/finalpay", (req, res) => {
       if (response.success) {
         //console.log(response)
         // console.log(response.usBankAccountVerification.id)
+
+        //verification method
         gateway.usBankAccountVerification.find(
           response.usBankAccountVerification.id,
           (err, verification) => {
@@ -115,4 +119,5 @@ router.post("/finalpay", (req, res) => {
     }
   );
 });
+
 module.exports = router;
