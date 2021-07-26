@@ -3,12 +3,16 @@ var router = express.Router();
 var braintree = require("braintree");
 var verificationId;
 var results;
+const env = require("dotenv").config();
 
 const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
-  merchantId: "bgznqt4c5w7p6vpx",
-  publicKey: "79fwqgp5prsvhgmb",
-  privateKey: "4517bea90f555cbbcfc47d52942d3c4e",
+  // merchantId: "bgznqt4c5w7p6vpx",
+  // publicKey: "79fwqgp5prsvhgmb",
+  // privateKey: "4517bea90f555cbbcfc47d52942d3c4e",
+  merchantId: process.env.merchantId,
+  publicKey: process.env.publicKey,
+  privateKey: process.env.privateKey,
 });
 
 // generate token
@@ -22,8 +26,8 @@ router.get("/initializeBraintree", async (req, res) => {
 });
 
 router.post("/confirmBraintree", async (req, res) => {
-  console.log("asaad", req.body);
-  console.log("amanuel", req.body.nonce);
+  // console.log("asaad", req.body);
+  // console.log("amanuel", req.body.nonce);
   let customerId;
   const nonceFromTheClient = req.body;
   gateway.customer.create(
@@ -34,6 +38,8 @@ router.post("/confirmBraintree", async (req, res) => {
     (err, result) => {
       if (result.success) {
         customerId = result.customer.id;
+
+        //to verify the bank account information, specify that method here:
         gateway.paymentMethod.create(
           {
             customerId: result.customer.id,
@@ -62,24 +68,29 @@ router.post("/confirmBraintree", async (req, res) => {
 });
 
 router.post("/finalpay", (req, res) => {
-  console.log("final payment", req.body);
+  // console.log("final payment", req.body);
+
+  // Confirming micro-deposit amounts
+
   gateway.usBankAccountVerification.confirmMicroTransferAmounts(
     verificationId,
     [req.body.x, req.body.y],
     (err, response) => {
-      console.log(response);
+      console.log("microConfirm", response);
       if (response.success) {
         //console.log(response)
         // console.log(response.usBankAccountVerification.id)
 
-        //verification method
+        // Looking up individual verification status
+
         gateway.usBankAccountVerification.find(
           response.usBankAccountVerification.id,
           (err, verification) => {
-            console.log(verification);
+            // console.log(verification);
             const status = verification.status;
             if (status == "verified") {
-              // ready for transacting
+              // ready for transacting or Creating transactions
+
               gateway.transaction.sale(
                 {
                   amount: req.body.amount,
@@ -92,7 +103,7 @@ router.post("/finalpay", (req, res) => {
                   },
                 },
                 (err, result) => {
-                  console.log("successssss", result);
+                  // console.log("successssss", result);
                   if (result.success) {
                     // See result.transaction for details
                     res.json({

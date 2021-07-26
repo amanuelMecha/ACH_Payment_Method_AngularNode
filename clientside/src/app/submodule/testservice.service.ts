@@ -28,7 +28,8 @@ export class TestserviceService {
 
   // step 3 and step 4  to get payment method nonce from braintree and
   //  send payment method nonce to the server
-
+  //The customer submits payment information, the client SDK
+  //communicates that information to Braintree and returns a payment method nonce.
   createBraintree = (inputs: any) => {
     console.log('inputs', inputs);
     braintree.client.create(
@@ -76,8 +77,9 @@ export class TestserviceService {
                   );
                   throw tokenizeErr;
                 }
+                //Your front-end sends the payment method nonce to your server.
                 // Submit tokenizedPayload.nonce to your server as you would
-                // other payment method nonces.
+                // other payment method nonces. call 3030/confirmBraintree from backend
                 this.http
                   .post(`http://localhost:3030/confirmBraintree`, {
                     nonce: tokenizedPayload.nonce,
@@ -85,15 +87,15 @@ export class TestserviceService {
                   .subscribe((data: any) => {
                     this.token = data.data;
                     if (data.status === 'Enter two numbers') {
-                      this.enterTwoNumber = true;
+                      // this.enterTwoNumber = true;
                     }
                     this.route.navigate(['/pay']);
                     // //calling function to call braintree & get nonce
                     // this.createBraintree();
-                    console.log('data.status', this.enterTwoNumber);
+                    // console.log('data.status', this.enterTwoNumber);
                     // alert(data.status);
                   });
-                console.log('value of nonce', tokenizedPayload.nonce);
+                // console.log('value of nonce', tokenizedPayload.nonce);
               }
             );
           }
@@ -101,7 +103,7 @@ export class TestserviceService {
       }
     );
 
-    console.log('chmbilaw nonce', this.nounce);
+    // console.log('chmbilaw nonce', this.nounce);
   };
 
   // step send two numbers to the server

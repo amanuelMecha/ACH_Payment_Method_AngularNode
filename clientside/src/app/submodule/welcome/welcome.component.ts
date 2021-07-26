@@ -53,7 +53,7 @@ export class WelcomeComponent implements OnInit {
   generateToken() {
     this.service.getToken();
   }
-  
+
   createBraintreeFunction() {
     this.service.createBraintree(this.bankDetails);
     this.authorizedFromService = !this.auth2;
