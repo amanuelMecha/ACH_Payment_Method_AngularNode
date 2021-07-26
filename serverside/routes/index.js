@@ -15,6 +15,9 @@ const gateway = new braintree.BraintreeGateway({
   privateKey: process.env.privateKey,
 });
 
+router.get("/", (req, res) => {
+  res.json({ Status: "Hello from Heroku" });
+});
 // generate token
 router.get("/initializeBraintree", async (req, res) => {
   try {
