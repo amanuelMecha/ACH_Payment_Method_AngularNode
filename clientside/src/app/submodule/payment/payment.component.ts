@@ -20,19 +20,19 @@ export class PaymentComponent implements OnInit {
     this.myform = formbuild.group({
       firstNumber: ['17'],
       secondNumber: ['29'],
-      amount: [''],
     });
     this.myform.valueChanges.subscribe((data) => {
       this.fNumber = +data.firstNumber;
       this.sNumber = +data.secondNumber;
-      this.amountInput = +data.amount;
+
       console.log('pay', data);
     });
   }
 
   ngOnInit(): void {}
   sendFinalPayment() {
+    console.log('final paymensend', this.fNumber, this.sNumber);
     //17,29
-    this.service.finalPay(this.fNumber, this.sNumber, this.amountInput);
+    this.service.finalPay(this.fNumber, this.sNumber);
   }
 }

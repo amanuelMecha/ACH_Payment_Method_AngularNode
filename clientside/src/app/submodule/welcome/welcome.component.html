@@ -15,13 +15,17 @@
           <mat-label>Enter Route Number</mat-label>
           <input matInput formControlName="routingNumber" /> </mat-form-field
         ><br />
-
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Amount</mat-label>
+          <input matInput formControlName="amountindollar" /> </mat-form-field
+        ><br />
         <!-- <label>Account Number</label>
         <input type="text" id="ac" formControlName="accountNumber" /><br /> -->
 
         <!-- <label>Route Number</label>
         <input type="text" id="rc" formControlName="routingNumber" /><br /> -->
         <!-- //id="accountType" -->
+
         <div class="accountType">
           <label for="accountType">accountType </label>
           <select name="accountType" formControlName="accountType" value="dddd">
@@ -38,8 +42,8 @@
           formControlName="ownershipType"
         >
           <option value="personal">personal</option>
-          <option value="business">business</option>
-        </select>
+          <option value="business">business</option></select
+        ><br />
       </div>
 
       <div class="col-md-6">
@@ -53,8 +57,6 @@
             <input matInput formControlName="streetAddress" /> </mat-form-field
           ><br />
 
-          <!-- <label>streetAddress</label>
-          <input type="text" formControlName="streetAddress" /><br /> -->
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>extendedAddress</mat-label>
             <input
@@ -62,30 +64,21 @@
               formControlName="extendedAddress"
             /> </mat-form-field
           ><br />
-          <!-- 
-          <label>extendedAddress</label>
-          <input type="text" formControlName="extendedAddress" /><br />
-           -->
+
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>locality</mat-label>
             <input matInput formControlName="locality" /> </mat-form-field
           ><br />
 
-          <!-- <label>locality</label>
-          <input type="text" formControlName="locality" /><br /> -->
-
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>region</mat-label>
             <input matInput formControlName="region" /> </mat-form-field
           ><br />
-          <!-- <label>region</label>
-          <input type="text" formControlName="region" /><br /> -->
+
           <mat-form-field class="example-full-width" appearance="fill">
             <mat-label>postalCode</mat-label>
             <input matInput formControlName="postalCode" /> </mat-form-field
           ><br />
-          <!-- <label>postalCode</label>
-          <input type="text" formControlName="postalCode" /><br /> -->
         </div>
 
         <br />
@@ -97,6 +90,10 @@
         <div *ngIf="authorizedFromService" class="text-danger">
           <p>please authorize braintree to preforme this operation</p>
         </div>
+        <div *ngIf="onOff" class="text-danger">
+          <p>Invalid input</p>
+        </div>
+
         <button
           (click)="createBraintreeFunction()"
           class="btn btn-info"

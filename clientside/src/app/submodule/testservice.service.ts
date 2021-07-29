@@ -13,10 +13,14 @@ export class TestserviceService {
   nounce: any;
   nonceValue: any = '';
   enterTwoNumber: any;
+  amountInput: any;
+  countRetry: number = 0;
+  validAccount: any;
 
   url = 'http://localhost:3030/';
   constructor(private http: HttpClient, private route: Router) {}
   //step 1 and 2 requests a client token from your server and server send token
+
   getToken() {
     return this.http
       .get(`${this.url}initializeBraintree`)
@@ -32,6 +36,8 @@ export class TestserviceService {
   //communicates that information to Braintree and returns a payment method nonce.
   createBraintree = (inputs: any) => {
     console.log('inputs', inputs);
+    this.amountInput = inputs.amountindollar;
+    console.log('amnout', this.amountInput);
     braintree.client.create(
       {
         authorization: this.token,
@@ -72,8 +78,10 @@ export class TestserviceService {
               },
               (tokenizeErr: any, tokenizedPayload: any) => {
                 if (tokenizeErr) {
+                  alert('Invalid inputs please check it again');
+                  // this.validAccount = true;
                   console.log(
-                    'There was an error tokenizing the bank details.'
+                    'There was an error tokenizing the bank details. chombe'
                   );
                   throw tokenizeErr;
                 }
@@ -90,10 +98,6 @@ export class TestserviceService {
                       // this.enterTwoNumber = true;
                     }
                     this.route.navigate(['/pay']);
-                    // //calling function to call braintree & get nonce
-                    // this.createBraintree();
-                    // console.log('data.status', this.enterTwoNumber);
-                    // alert(data.status);
                   });
                 // console.log('value of nonce', tokenizedPayload.nonce);
               }
@@ -107,20 +111,30 @@ export class TestserviceService {
   };
 
   // step send two numbers to the server
-  finalPay(fNumber: any, sNumber: any, amount: any) {
+  finalPay(fNumber: any, sNumber: any) {
+    console.log('final amnoutn', this.amountInput);
     return this.http
       .post(`http://localhost:3030/finalpay`, {
         x: fNumber,
         y: sNumber,
-        amount: amount,
+        amount: this.amountInput,
       })
       .subscribe((data: any) => {
         this.token = data.data;
+        if (data.status === 'Fail') {
+          this.countRetry += 1;
+          if (this.countRetry < 5) {
+            alert('please enter two numbers correctly');
+          } else {
+            this.route.navigate(['/']);
+          }
+        } else {
+          alert(data.status);
+          this.route.navigate(['/']);
+        }
         // calling function to call braintree & get nonce
         // this.createBraintree();
         console.log('finalPay', data.status);
-        alert(data.status);
-        this.route.navigate(['/']);
       });
   }
 }

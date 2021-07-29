@@ -7,18 +7,11 @@ const env = require("dotenv").config();
 
 const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
-  // merchantId: "bgznqt4c5w7p6vpx",
-  // publicKey: "79fwqgp5prsvhgmb",
-  // privateKey: "4517bea90f555cbbcfc47d52942d3c4e",
   merchantId: process.env.merchantId,
   publicKey: process.env.publicKey,
   privateKey: process.env.privateKey,
 });
 
-router.get("/", (req, res) => {
-  res.json({ Status: "Hello from Heroku" });
-});
-// generate token
 router.get("/initializeBraintree", async (req, res) => {
   try {
     let token = (await gateway.clientToken.generate({})).clientToken;
@@ -29,10 +22,14 @@ router.get("/initializeBraintree", async (req, res) => {
 });
 
 router.post("/confirmBraintree", async (req, res) => {
-  // console.log("asaad", req.body);
-  // console.log("amanuel", req.body.nonce);
+  //payment method nonce = req.body
+  //console.log("asaad", req.body);
+
   let customerId;
   const nonceFromTheClient = req.body;
+
+  //to create customerID
+
   gateway.customer.create(
     {
       firstName: "Amanuel",
@@ -58,7 +55,9 @@ router.post("/confirmBraintree", async (req, res) => {
               results = result;
               const usBankAccount = result.paymentMethod;
               //we will use this verfication id for final payment
+
               verificationId = usBankAccount.verifications[0].id;
+
               console.log("cho result", verificationId);
 
               res.json({ status: "Enter two numbers" });
@@ -72,25 +71,22 @@ router.post("/confirmBraintree", async (req, res) => {
 
 router.post("/finalpay", (req, res) => {
   // console.log("final payment", req.body);
-
   // Confirming micro-deposit amounts
+  console.log("xy", req.body);
 
   gateway.usBankAccountVerification.confirmMicroTransferAmounts(
     verificationId,
     [req.body.x, req.body.y],
+
     (err, response) => {
       console.log("microConfirm", response);
       if (response.success) {
-        //console.log(response)
-        // console.log(response.usBankAccountVerification.id)
-
-        // Looking up individual verification status
-
         gateway.usBankAccountVerification.find(
           response.usBankAccountVerification.id,
           (err, verification) => {
             // console.log(verification);
             const status = verification.status;
+            console.log("status", status);
             if (status == "verified") {
               // ready for transacting or Creating transactions
 
@@ -106,7 +102,7 @@ router.post("/finalpay", (req, res) => {
                   },
                 },
                 (err, result) => {
-                  // console.log("successssss", result);
+                  //console.log("successssss", result);
                   if (result.success) {
                     // See result.transaction for details
                     res.json({
@@ -132,6 +128,30 @@ router.post("/finalpay", (req, res) => {
       //console.log(response)
     }
   );
+});
+
+//import   <script src="https://js.braintreegateway.com/web/3.79.1/js/payment-request.min.js"></script>
+
+router.post("/webhooks", (req, res) => {
+  console.log("req.body", req.body);
+  gateway.webhookNotification.parse(
+    req.body.bt_signature,
+    req.body.bt_payload,
+    (err, webhookNotification) => {
+      console.log(
+        "[Webhook Received " +
+          webhookNotification.timestamp +
+          "] | Kind: " +
+          webhookNotification.kind
+      );
+
+      // Example values for webhook notification properties
+      console.log(webhookNotification.kind); // "subscriptionWentPastDue"
+      console.log(webhookNotification.timestamp); // Sun Jan 1 00:00:00 UTC 2012
+      res.status(200).send();
+    }
+  );
+  // res.json({ status: "Hello webhook" });
 });
 
 module.exports = router;

@@ -21,14 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cors());
-// app.get("/", (req, res) => {
-//   res.json({ status: "success" });
-// });
 
-// app.post("/", (req, res) => {
-//   console.log("received", req.body);
-//   res.json({ status: "received" });
-// });
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
