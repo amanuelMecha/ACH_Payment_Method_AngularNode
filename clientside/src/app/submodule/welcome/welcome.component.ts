@@ -23,6 +23,8 @@ export class WelcomeComponent implements OnInit {
     private service: TestserviceService
   ) {
     this.myform = this.formbuild.group({
+      firstName: [''],
+      lastName: [''],
       accountNumber: [''],
       routingNumber: [''],
       accountType: [''],

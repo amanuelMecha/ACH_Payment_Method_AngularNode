@@ -37,7 +37,7 @@ export class TestserviceService {
   createBraintree = (inputs: any) => {
     console.log('inputs', inputs);
     this.amountInput = inputs.amountindollar;
-    console.log('amnout', this.amountInput);
+
     braintree.client.create(
       {
         authorization: this.token,
@@ -64,8 +64,8 @@ export class TestserviceService {
             var bankDetails = inputs;
 
             if (bankDetails.ownershipType === 'personal') {
-              bankDetails.firstName = 'Amanuel';
-              bankDetails.lastName = 'Mecha';
+              bankDetails.firstName = inputs.firstName;
+              bankDetails.lastName = inputs.lastName;
             } else {
               bankDetails.businessName = '';
             }
@@ -88,10 +88,13 @@ export class TestserviceService {
                 //Your front-end sends the payment method nonce to your server.
                 // Submit tokenizedPayload.nonce to your server as you would
                 // other payment method nonces. call 3030/confirmBraintree from backend
+                let data = {
+                  nonce: tokenizedPayload.nonce,
+                  fname: inputs.firstName,
+                  lname: inputs.lastName,
+                };
                 this.http
-                  .post(`http://localhost:3030/confirmBraintree`, {
-                    nonce: tokenizedPayload.nonce,
-                  })
+                  .post(`http://localhost:3030/confirmBraintree`, data)
                   .subscribe((data: any) => {
                     this.token = data.data;
                     if (data.status === 'Enter two numbers') {

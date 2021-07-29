@@ -23,7 +23,7 @@ router.get("/initializeBraintree", async (req, res) => {
 
 router.post("/confirmBraintree", async (req, res) => {
   //payment method nonce = req.body
-  //console.log("asaad", req.body);
+  console.log("asaad", req.body);
 
   let customerId;
   const nonceFromTheClient = req.body;
@@ -32,8 +32,8 @@ router.post("/confirmBraintree", async (req, res) => {
 
   gateway.customer.create(
     {
-      firstName: "Amanuel",
-      lastName: "Mecha",
+      firstName: nonceFromTheClient.fname,
+      lastName: nonceFromTheClient.lname,
     },
     (err, result) => {
       if (result.success) {
